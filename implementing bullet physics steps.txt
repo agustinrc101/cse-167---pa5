@@ -1,0 +1,25 @@
+Using BulletPhysics
+
+bulletphysics.org/mediawiki-1.5.8/index.php/Creating_a_project_from_scratch
+	-See mac steps
+
+//This might not work for mac
+1. Add existing 
+	projects from ./Physics/build3/vs2010
+	
+		BulletSoftBody.vcxproj
+		BulletDynamics.vcxproj
+		BulletCollision.vcxproj
+		LinearMath.vcxproj
+	
+2. Add libraries in the same order
+		_______.lib
+
+		add path ./Physics/bin
+		
+3. Add source code directory
+		./Physics/src
+		
+4. Add dependencies to GLSFWStarterProgram (or whatever
+	the project's name is)
+	
