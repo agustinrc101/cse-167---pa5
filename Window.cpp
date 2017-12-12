@@ -156,9 +156,9 @@ void Window::idle_callback(){
 		
 
 		game->update(delta);
-		if (game->getIsEvent1())
-			cam->Position = glm::vec3(0.0f, 20.0f, -105.0f);//game->getNewCamPos();	//Sets camera's initial position
-		if (game->getIsEvent2() && cam->Position.z < -40.0f && cam->Position.y > -5.0f) //Camera follows the thrown objects
+		if (game->getIsEvent1() && game->getNewCamPos().y > -10.0f)
+			cam->Position = game->getNewCamPos();//glm::vec3(0.0f, 20.0f, -105.0f);	//Sets camera's initial position
+		if (game->getIsEvent2() && cam->Position.z < -40.0f && game->getNewCamPos().y > -10.0f) //Camera follows the thrown objects
 			cam->Position = game->getNewCamPos();
 	}
 	else {

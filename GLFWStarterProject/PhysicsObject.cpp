@@ -26,7 +26,6 @@ PhysicsObject::~PhysicsObject(){
 	glDeleteBuffers(1, &VBO2);
 }
 
-
 void PhysicsObject::draw(glm::mat4 C) {
 	modelview = C * M;
 	V = C;
@@ -84,9 +83,9 @@ void PhysicsObject::initHeightMapModel(std::vector<std::vector<float>> terrain) 
 
 	for (int i = 0; i < terrain.size() - 1; i++) {
 		for (int j = 0; j < terrain[i].size() - 1; j++) {
-			float x = i*size - (terrain.size() / 2.0f);
+			float x = i*size - (terrain.size() / 2.0f) + 1.0f;
 			float y = terrain[i][j] * height;
-			float z = j*size - (terrain.size() / 2.0f);
+			float z = j*size - (terrain.size() / 2.0f) + 1.0f;
 
 			vertices.push_back(glm::vec3(x, y, z));
 		}

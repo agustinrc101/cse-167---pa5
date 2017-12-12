@@ -157,7 +157,7 @@ void PhysicsEngine::addHeightField(GLuint shader, GLuint bordShader, std::vector
 
 //TODO do something about delay
 void PhysicsEngine::update(float delta) {
-	dynamicsWorld->stepSimulation(1.0 / 60.0);
+	dynamicsWorld->stepSimulation(2.0 / 60.0);
 }
 
 void PhysicsEngine::draw(glm::mat4 C) {
@@ -197,11 +197,20 @@ void PhysicsEngine::shoot(const char * filename, GLuint shader, GLuint bordShade
 
 void PhysicsEngine::launch(glm::vec3 dir, int strength, int index) {
 	PhysicsObject * temp = objects[index];
+	
+	//Checks if object is not a player
 	if (!temp->getIsPlayer()) return;
 
-	glm::vec3 l = dir - temp->getPosition();
-	l = glm::normalize(l);
-	btVector3 launch = btVector3(l.x, l.y * 20.0f, l.z * 1.0 * 10.0f);
+	glm::vec3 l = glm::normalize(dir);
+
+	float force;
+	if (strength >= 0)
+		force = 1.0f;
+	else {
+		force = -strength / 15.0f;		//Strength tweaks
+	}
+
+	btVector3 launch = btVector3(l.x, l.y * 2.0f * force, l.z * force);
 	bodies[index]->setLinearVelocity(launch);
 }
 
@@ -213,12 +222,15 @@ void PhysicsEngine::updateCamPos(glm::vec3 pos) {
 }
 
 void PhysicsEngine::moveObject(glm::vec3 t, int index) {
-	//btTransform currentTransform = btTransform();
-	//bodies[index]->getMotionState()->getWorldTransform(currentTransform);
+	btTransform initialTransform;
 
-	//btVector3 s = bodies[index]->getWorldTransform().getOrigin();
-	//btVector3 e = btVector3(t.x, t.y, t.z);
-	
-	//bodies[index]->getWorldTransform().setOrigin(s + e);
-	
-	}
+	btVector3 offset = btVector3(t.x, t.y, t.z);
+	btVector3 curpos = bodies[index]->getWorldTransform().getOrigin();
+	btQuaternion curor = bodies[index]->getOrientation();
+
+	initialTransform.setOrigin(offset + curpos);
+	initialTransform.setRotation(curor);
+
+	bodies[index]->setWorldTransform(initialTransform);
+	bodies[index]->getMotionState()->setWorldTransform(initialTransform);
+}

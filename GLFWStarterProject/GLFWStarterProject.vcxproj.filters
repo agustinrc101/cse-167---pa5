@@ -80,24 +80,6 @@
     <None Include="..\skyboxshader.frag">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="..\selectionshader.frag">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\selectionshader.vert">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\reflectionShader.frag">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\reflectionShader.vert">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\simpleShader.frag">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\simpleShader.vert">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="..\toonShader.vert">
       <Filter>Source Files</Filter>
     </None>

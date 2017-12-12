@@ -34,13 +34,13 @@ void main(){
 		coloring = 	rgb;
 	}
 	else{
-		if(distance(pt, center100) - radius100 < radius100)
+		if     (distance(pt, center100) - radius100/2.0 < radius100 / 2.0)
 			coloring = vec3(1.0, 0.0, 117.0 / 255.0);
-		else if(distance(pt, center50) - radius50 < radius50)
+		else if(distance(pt, center50 ) - radius50/2.0  < radius50 / 2.0)
 			coloring = vec3(1.0, 125.0 / 255.0, 0.0);
-		else if(distance(pt, center25) - radius25 < radius25)
+		else if(distance(pt, center25 ) - radius25/2.0   < radius25 / 2.0)
 			coloring = vec3(0.0, 1.0, 1.0);
-		else if(distance(pt, vec3(0,0,0)) - 25.0 < 25.0)
+		else if(distance(pt, vec3(0,0,0)) - 25.0     < 25.0)
 			coloring = vec3(1.0, 1.0, 159.0 / 255.0);
 		else
 			coloring = rgb;

@@ -66,9 +66,9 @@ void IslandsGL::loadScoreLocations() {
 	time_t t = clock();
 	srand(t);
 
-	score100->radius = 4.0f;
-	score50->radius = 6.0f;
-	score25->radius = 8.0f;
+	score100->radius = 8.0f;
+	score50->radius = 12.0f;
+	score25->radius = 16.0f;
 
 	std::cout << "\t0%\n";
 	//Set score25's position
@@ -78,7 +78,7 @@ void IslandsGL::loadScoreLocations() {
 		float z = rand() % ((int)(2 * radius) + 1) - radius;
 		score25->position = glm::vec3(x, 0, z);
 
-		if (glm::distance(glm::vec3(center.x, 0, center.z), score25->position) < radius + score25->radius)
+		if (glm::distance(glm::vec3(center.x, 0, center.z), score25->position) < radius/2.0 + score25->radius)
 			isInside = true;
 	}
 	std::cout << "\t12%\n";
@@ -90,7 +90,7 @@ void IslandsGL::loadScoreLocations() {
 		float z = rand() % ((int)(2 * radius) + 1) - radius;
 		score50->position = glm::vec3(x, 0, z);
 
-		if (glm::distance(center, score50->position) < radius + score50->radius){
+		if (glm::distance(center, score50->position) < radius/2.0 + score50->radius){
 			if (glm::distance(score50->position, score25->position) >= score50->radius + score25->radius)
 				isInside = true;
 		}
@@ -105,7 +105,7 @@ void IslandsGL::loadScoreLocations() {
 		float z = rand() % ((int)(2 * radius) + 1) - radius;
 		score100->position = glm::vec3(x, 0, z);
 
-		if (glm::distance(center, score100->position) < radius + score100->radius) {
+		if (glm::distance(center, score100->position) < radius/2.0 + score100->radius) {
 			if (glm::distance(score50->position, score100->position) >= score50->radius + score100->radius) {
 				if(glm::distance(score25->position, score100->position) >= score25->radius + score100->radius)
 					isInside = true;
@@ -147,9 +147,18 @@ void IslandsGL::generateHeightField() {
 
 void IslandsGL::mouseMovement(float x, float y) {
 	int size = physicsEngine->getObjectsSize();
-	physicsEngine->moveObject(glm::vec3(-x / 20.0f, y / 20.0f, 0.0f), size - 1);
-	physicsEngine->moveObject(glm::vec3(-x / 20.0f, y / 20.0f, 0.0f), size - 2);
-	physicsEngine->moveObject(glm::vec3(-x / 20.0f, y / 20.0f, 0.0f), size - 3);
+
+	if (x <= 50 && x >= -50 && y <= 50 && y >= -50) {
+		physicsEngine->moveObject(glm::vec3(x / 10.0f, y / 10.0f, 0.0f), size - 1);
+		physicsEngine->moveObject(glm::vec3(x / 10.0f, y / 10.0f, 0.0f), size - 2);
+		physicsEngine->moveObject(glm::vec3(x / 10.0f, y / 10.0f, 0.0f), size - 3);
+
+		xMoved += x;
+		yMoved += y;
+	}
+	else {
+		//std::cout << x << ", " << y << std::endl;
+	}
 }
 
 void IslandsGL::doEvent1(float delta) {
@@ -174,9 +183,9 @@ void IslandsGL::doEvent1(float delta) {
 		glm::vec3 pos2 = physicsEngine->getPosition(index - 2);
 		glm::vec3 pos3 = physicsEngine->getPosition(index - 3);
 
-		physicsEngine->launch(glm::vec3(pos1.x, pos1.y + 5.0f, pos1.z + 5.0f), glm::abs(yMoved), index - 1);
-		physicsEngine->launch(glm::vec3(pos2.x, pos2.y + 5.0f, pos2.z + 5.0f), glm::abs(yMoved), index - 2);
-		physicsEngine->launch(glm::vec3(pos3.x, pos3.y + 5.0f, pos3.z + 5.0f), glm::abs(yMoved), index - 3);
+		physicsEngine->launch(glm::vec3(0, 1, 1), yMoved, index - 1);
+		physicsEngine->launch(glm::vec3(0, 1, 1), yMoved, index - 2);
+		physicsEngine->launch(glm::vec3(0, 1, 1), yMoved, index - 3);
 	}
 
 	gameEllapsedTime = delta;
@@ -188,6 +197,8 @@ glm::vec3 IslandsGL::getNewCamPos() {
 }
 
 void IslandsGL::doEvent2(float delta) {
+	event1 = false;
+	launched = false;
 	bool track = event2Helper();
 
 	if (delta - gameEllapsedTime < 0.8 || track) {}
@@ -256,13 +267,13 @@ void IslandsGL::getScore(float r, glm::vec3 pos, int player) {
 	
 	int score = 0;
 	if (pos.y > -25.0f) {
-		if (glm::distance(tempPos, score100->position) <= r + score100->radius)
+		if (glm::distance(tempPos, score100->position) < (score100->radius))// / 2.0f))// + score100->radius)
 			score = 100;
-		else if (glm::distance(tempPos, score50->position) <= r + score50->radius)
+		else if (glm::distance(tempPos, score50->position) < (score50->radius))// / 2.0f))// + score50->radius)
 			score = 50;
-		else if (glm::distance(tempPos, score25->position) <= r + score25->radius)
+		else if (glm::distance(tempPos, score25->position) < (score25->radius))// / 2.0f))// + score25->radius)
 			score = 25;
-		else if (glm::distance(tempPos, center) < r + radius)
+		else if (glm::distance(tempPos, center) < (radius))// / 2.0f))// + radius)
 			score = 10;
 		else
 			score = 0;

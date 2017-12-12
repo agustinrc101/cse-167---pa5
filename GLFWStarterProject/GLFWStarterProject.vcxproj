@@ -43,12 +43,6 @@
   <ItemGroup>
     <None Include="..\borders.frag" />
     <None Include="..\borders.vert" />
-    <None Include="..\reflectionShader.frag" />
-    <None Include="..\reflectionShader.vert" />
-    <None Include="..\selectionshader.frag" />
-    <None Include="..\selectionshader.vert" />
-    <None Include="..\simpleShader.frag" />
-    <None Include="..\simpleShader.vert" />
     <None Include="..\skyboxshader.frag" />
     <None Include="..\skyboxshader.vert" />
     <None Include="..\toonShader.frag" />
